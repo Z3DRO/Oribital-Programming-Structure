@@ -50,6 +50,54 @@ public class SolarSystemPanel extends JPanel implements ActionListener
     protected void paintComponent(Graphics g) 
     {
         super.paintComponent(g);
-        // Kriti draws everything here
+            Graphics2D g2 = (Graphics2D) g;
+          g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            int cx = getWidth() / 2;
+            int cy = getHeight() / 2;
+
+            drawStars(g2);
+            drawOrbits(g2, cx, cy);
+            drawSun(g2, cx, cy);
+            drawPlanets(g2);
     }
+    private void drawStars(Graphics2D g2) {
+    g2.setColor(new Color(255, 255, 255, 100));
+    for (int i = 0; i < 200; i++) {
+        int x = (int)(Math.random() * WIDTH);
+        int y = (int)(Math.random() * HEIGHT);
+        g2.fillOval(x, y, 2, 2);
+    }
+}
+
+private void drawOrbits(Graphics2D g2, int cx, int cy) {
+    g2.setColor(new Color(255, 255, 255, 30));
+    for (Planet p : planets) {
+        int r = (int) p.getOrbitRadius();
+        g2.drawOval(cx - r, cy - r, r * 2, r * 2);
+    }
+}
+
+private void drawSun(Graphics2D g2, int cx, int cy) {
+    g2.setColor(new Color(255, 200, 50));
+    g2.fillOval(cx - 28, cy - 28, 56, 56);
+    g2.setColor(new Color(255, 220, 100));
+    g2.setFont(new Font("Segoe UI", Font.BOLD, 11));
+    g2.drawString("Sun", cx - 11, cy + 42);
+}
+
+private void drawPlanets(Graphics2D g2) {
+    for (Planet p : planets) {
+        int px = p.getX();
+        int py = p.getY();
+        int r  = (int) p.getSize();
+
+        g2.setColor(p.getColor());
+        g2.fillOval(px - r, py - r, r * 2, r * 2);
+
+        g2.setColor(new Color(220, 220, 220, 200));
+        g2.setFont(new Font("Segoe UI", Font.PLAIN, 10));
+        g2.drawString(p.getName(), px + r + 3, py + 4);
+    }
+}
 }
